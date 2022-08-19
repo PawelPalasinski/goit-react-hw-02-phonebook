@@ -11,36 +11,44 @@ class Phonebook extends Component {
         };
     }
 
+    
+
     handleSubmit = e => {
         e.preventDefault();
         const form = e.currentTarget;
-        const contactName = form.elements.name.value;
-        const phoneNumber = form.elements.number.value;
+        const name = form.elements.name.value;
+        const number = form.elements.number.value;
+        const id = nanoid();
+        if (this.state.contacts.filter((el) => el.name === name).length > 0) { return alert("DUUUUUUPA"); } else {
+        return (
         this.setState({
             ...this.state,
-            contacts: [
-                ...this.state.contacts,
-                {
-                    name: contactName,
-                    number: phoneNumber,
-                    id: nanoid(),
-                },
-            ],
+            contacts: [...this.state.contacts, { id: id, lol: id, name: name, number: number }],
             name: '',
-        });
-
-        console.log(e);
+        }))
+    }
     };
+
+    removeContatcFromState = (id) => {
+        const newContactList = this.state.contacts.filter((el) => el.id !== id);
+        this.setState({ ...this.state, contacts: newContactList })
+    }
 
     renderContacts = (filterValue, contactsArray) => {
         if (!filterValue) return contactsArray.map(contact => {
             return (
-                <li key={contact.id}>{contact.name} : {contact.number}</li>
+                <>
+                    <li key={contact.id} lol={contact.lol}>{contact.name} : {contact.number}</li>
+                    <button key={contact.id + `btn`} onClick={() => { this.removeContatcFromState(contact.id) }}>Delete</button>
+                    </>
             );
         });
         return contactsArray.filter((el, id) => el.name.toLowerCase().includes(filterValue.toLowerCase())).map(contact => {
             return (
-                <li key={contact.id}>{contact.name} : {contact.number}</li>
+                <>
+                <li key={contact.id} lol={contact.lol}>{contact.name} : {contact.number}</li>
+                    <button key={contact.id + `btn`}  onClick={() => { this.removeContatcFromState(contact.id) }}>Delete</button>
+                    </>
             );
         });
         // console.log(contactsArray.filter((el, id) => el.name.toLowerCase().includes(filterValue.toLowerCase())))
@@ -50,10 +58,11 @@ class Phonebook extends Component {
         const {filter, contacts } = this.state;     
     return (
       <div>
-        <div>
+            <div>
+              {/* <ContactForm submitHandler={this.handleSubmit} />   */}
           <form onSubmit={this.handleSubmit}>
             <label htmlFor="name">Name</label>
-            <input
+                    <input
               type="text"
               name="name"
               id="name"
@@ -63,7 +72,7 @@ class Phonebook extends Component {
             />
             <br />
             <label htmlFor="number">Number</label>
-            <input
+                    <input
               type="tel"
               id="number"
               name="number"
@@ -71,20 +80,25 @@ class Phonebook extends Component {
               title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
               required
             />
-
             <button onClick={() => {}}>Add contact</button>
             <br />
-          </form>
+                </form>
+                
         </div>
         <div>
                 <p>Contacts</p>
-                <input onChange={e => {
+
+                {/* <Filter onFilterChange={ }/> */}
+                <input
+                    onChange={e => {
                     console.log(e.target.value);
                     this.setState({...this.state, filter: e.target.value});
-                }}/>
+                }} />
           <ul>
             {this.renderContacts(filter, contacts)}
-          </ul>
+                </ul>
+                
+
         </div>
       </div>
     );
