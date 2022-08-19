@@ -14,7 +14,7 @@ class Phonebook extends Component {
     e.preventDefault();
     const form = e.currentTarget;
     const contactName = form.elements.name.value;
-    const phoneNumber = form.elements.number.value;
+    // const phoneNumber = form.elements.number.value;
     this.setState({
       ...this.state,
       contacts: [
