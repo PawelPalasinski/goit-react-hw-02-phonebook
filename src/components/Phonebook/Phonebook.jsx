@@ -2,35 +2,52 @@ import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
 
 class Phonebook extends Component {
-  constructor() {
-    super();
-    this.state = {
-      contacts: [],
-      name: '',
+    constructor() {
+        super();
+        this.state = {
+            contacts: [],
+            name: '',
+            number: '',
+        };
+    }
+
+    handleSubmit = e => {
+        e.preventDefault();
+        const form = e.currentTarget;
+        const contactName = form.elements.name.value;
+        const phoneNumber = form.elements.number.value;
+        this.setState({
+            ...this.state,
+            contacts: [
+                ...this.state.contacts,
+                {
+                    name: contactName,
+                    number: phoneNumber,
+                    id: nanoid(),
+                },
+            ],
+            name: '',
+        });
+
+        console.log(e);
     };
-  }
 
-  handleSubmit = e => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const contactName = form.elements.name.value;
-    // const phoneNumber = form.elements.number.value;
-    this.setState({
-      ...this.state,
-      contacts: [
-        ...this.state.contacts,
-        {
-          name: contactName,
-          id: nanoid(),
-        },
-      ],
-      name: '',
-    });
-
-    console.log(e);
-  };
-
+    renderContacts = (filterValue, contactsArray) => {
+        if (!filterValue) return contactsArray.map(contact => {
+            return (
+                <li key={contact.id}>{contact.name} : {contact.number}</li>
+            );
+        });
+        return contactsArray.filter((el, id) => el.name.toLowerCase().includes(filterValue.toLowerCase())).map(contact => {
+            return (
+                <li key={contact.id}>{contact.name} : {contact.number}</li>
+            );
+        });
+        // console.log(contactsArray.filter((el, id) => el.name.toLowerCase().includes(filterValue.toLowerCase())))
+    };
+    
     render() {
+        const {filter, contacts } = this.state;     
     return (
       <div>
         <div>
@@ -61,11 +78,12 @@ class Phonebook extends Component {
         </div>
         <div>
                 <p>Contacts</p>
-                <input onChange={e => {}}/>
+                <input onChange={e => {
+                    console.log(e.target.value);
+                    this.setState({...this.state, filter: e.target.value});
+                }}/>
           <ul>
-            {this.state.contacts.map(contact => {
-              return <li key={contact.id}>{contact.name}</li>;
-            })}
+            {this.renderContacts(filter, contacts)}
           </ul>
         </div>
       </div>
