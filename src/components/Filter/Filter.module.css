@@ -3,21 +3,6 @@
   border: 1px solid grey;
   border-radius: 4px;
   height: 30px;
-}
-
-.filter::-webkit-input-placeholder {
-  padding-left: 10px;
-}
-
-.filter:-ms-input-placeholder {
-  padding-left: 10px;
-}
-
-.filter::-ms-input-placeholder {
-  padding-left: 10px;
-}
-
-.filter::placeholder {
   padding-left: 10px;
 }
 
