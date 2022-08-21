@@ -43,17 +43,17 @@ class App extends Component {
     const visibleContacts = this.getVisibleContacts();
     return (
       <>
-        <h1>Contact Form</h1>
         <ContactForm
           onAdd={this.handleAddContact}
           onCheckUnique={this.handleCheckUnique}
         />
-        <h2>Contacts List</h2>
-        <Filter filter={filter} onChange={this.handleFilterChange} />
+
+        {/* <Filter filter={filter} onChange={this.handleFilterChange} /> */}
         <ContactList
           contacts={visibleContacts}
-          onRemove={this.handleremoveContact}
-        />
+          onRemove={this.handleremoveContact}>
+          <Filter filter={filter} onChange={this.handleFilterChange} />
+          </ContactList>
       </>
     );
   }

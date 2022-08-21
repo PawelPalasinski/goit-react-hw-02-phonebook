@@ -1,5 +1,6 @@
 import { React, Component } from 'react';
 import { nanoid } from 'nanoid';
+import styles from './ContactForm.module.css';
 
 const INITIAL_STYATE = {
         name: '',
@@ -42,7 +43,8 @@ class ContactForm extends Component {
     render() {
         const {name, number} = this.state
         return (
-            <div>
+            <div className={styles.phonebook}>
+                <h2>Phonebook</h2>
                 <form onSubmit={this.handleFormSubmit}>
                     <label htmlFor="name">Name</label>
                     <input

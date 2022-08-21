@@ -1,6 +1,8 @@
+import styles from './Filter.module.css';
+
 const Filter = ({ filter, onChange }) => {
   return (
-    <input
+    <input className={styles.filter}
       type="text"
       name="filter"
       value={filter}

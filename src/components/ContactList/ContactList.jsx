@@ -1,18 +1,30 @@
-const ContactList = ({ contacts, onRemove }) => {
+import styles from './ContactList.module.css';
+
+
+
+const ContactList = ({ contacts, onRemove, children }) => {
   if (contacts.length === 0) return null;
   return (
-    <ul>
-          {contacts.map(contact => {
-              return (
-                  <li key={contact.id}>
-                      {contact.name} : {contact.number}
-                      <button onClick={() => {
-                          onRemove(contact.id);
-                      }}>⛌</button>
-                  </li>
-              )
-          })}
-    </ul>
+    <div className={styles.contacts}>
+      <h2>Contacts</h2>
+      {children}
+      <ul>
+        {contacts.map(contact => {
+          return (
+            <li key={contact.id}>
+              <p><span>{contact.name} : </span>{contact.number}</p>
+              <button
+                onClick={() => {
+                  onRemove(contact.id);
+                }}
+              >
+                ⛌
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 };
 
