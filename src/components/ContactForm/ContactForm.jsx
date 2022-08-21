@@ -1,47 +1,49 @@
 import { React, Component } from 'react';
+import { nanoid } from 'nanoid';
 
 const INITIAL_STYATE = {
         name: '',
-        phone: '',
+        number: '',
     }
 
 class ContactForm extends Component {
-    state = {
-        name: '',
-        phone: '',
-    }
+    state = INITIAL_STYATE;
     
     handleChangeForm = ({ target }) => {
-        const {name, value} = targetthis.setState({[nmame]: value})
+        const { name, value } = target
+        this.setState({ [name]: value })
     }
 
     handleFormSubmit = e => {
         e.preventDefault()
 
-        const { name, phone } = this.state;
+        const { name, number } = this.state;
         const { onAdd } = this.props;
 
         const isValidatedForm = this.validateForm()
 
         if (!isValidatedForm) return
-        onAdd({name, phone})
+        onAdd({ id: nanoid(), name, number })
+        this.resetForm()
     }
 
     validateForm = () => {
-        const { name, phone } = this.state;
+        const { name, number } = this.state;
         const { onCheckUnique } = this.props
-        if (!name || !phone) {
+        if (!name || !number) {
             alert(`${name} is already in contacts`);
             return false
         }
         return onCheckUnique(name)
     }
 
+    resetForm = () => this.setState(INITIAL_STYATE)
 
     render() {
+        const {name, number} = this.state
         return (
             <div>
-                <form onSubmit={this.props.submitHandler}>
+                <form onSubmit={this.handleFormSubmit}>
                     <label htmlFor="name">Name</label>
                     <input
                         type="text"
@@ -49,7 +51,7 @@ class ContactForm extends Component {
                         id="name"
                         placeholder='Enter name'
                         value={name}
-                        onChange
+                        onChange={this.handleChangeForm}
                         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                         required
@@ -61,8 +63,8 @@ class ContactForm extends Component {
                         id="number"
                         name="number"
                         placeholder='Enter phone number'
-                        value={phone}
-                        onChange
+                        value={number}
+                        onChange={this.handleChangeForm}
                         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                         required
